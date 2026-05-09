@@ -84,6 +84,25 @@ a:hover { color: var(--clr-gold); }
 }
 
 /* ── Theme toggle button ── */
+.lang-btn {
+  background: transparent;
+  border: 2px solid var(--clr-accent);
+  border-radius: 50px;
+  padding: 0.3rem 0.75rem;
+  color: var(--clr-accent);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: background var(--transition), color var(--transition), transform var(--transition);
+  flex-shrink: 0;
+}
+.lang-btn:hover {
+  background: var(--clr-accent);
+  color: #fff;
+  transform: translateY(-2px);
+}
+
 .theme-btn {
   background: linear-gradient(135deg, var(--clr-accent), var(--clr-accent2));
   border: none;

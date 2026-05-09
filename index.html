@@ -29,6 +29,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
   <!-- Main script (after Three.js) -->
   <script src="assets/js/main.js" defer></script>
+  <script src="assets/js/i18n.js" defer></script>
 </head>
 <body>
 
@@ -43,11 +44,12 @@
   <nav>
     <span class="nav-logo">Lucas Delbecque</span>
     <ul class="nav-links">
-      <li><a href="#about">À propos</a></li>
-      <li><a href="#projects">Projets</a></li>
-      <li><a href="#films">Films</a></li>
-      <li><a href="#contact">Contact</a></li>
+      <li><a href="#about" data-i18n="nav.about">À propos</a></li>
+      <li><a href="#projects" data-i18n="nav.projects">Projets</a></li>
+      <li><a href="#films" data-i18n="nav.films">Films</a></li>
+      <li><a href="#contact" data-i18n="nav.contact">Contact</a></li>
     </ul>
+    <button id="lang-toggle" class="lang-btn" aria-label="Switch language">EN</button>
     <button id="theme-toggle" class="theme-btn" aria-label="Changer le thème">
       <span id="theme-icon">☀️</span>
     </button>
@@ -58,9 +60,9 @@
   <!-- ╚═══════════════════════════════╝ -->
   <section id="hero">
     <div class="hero-content">
-      <p class="hero-eyebrow">Portfolio 2026</p>
+      <p class="hero-eyebrow" data-i18n="hero.eyebrow">Portfolio 2026</p>
       <h1 class="hero-name">Lucas Delbecque</h1>
-      <p class="hero-title">
+      <p class="hero-title" data-i18n="hero.title">
         Étudiant <span>IA &amp; Data Science</span> · <span>3D</span> · Game Dev
       </p>
       <div class="hero-cta">
@@ -69,7 +71,7 @@
           <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
             <path d="M5 3.5l7 4.5-7 4.5V3.5z"/>
           </svg>
-          Voir mes projets
+          <span data-i18n="hero.cta.primary">Voir mes projets</span>
         </a>
         <a href="assets/cv-lucas-delbecque.pdf" download class="btn btn-outline">
           <!-- Download icon -->
@@ -77,12 +79,12 @@
             <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
             <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
           </svg>
-          Télécharger mon CV
+          <span data-i18n="hero.cta.secondary">Télécharger mon CV</span>
         </a>
       </div>
     </div>
     <div class="scroll-hint">
-      <span>Scroll</span>
+      <span data-i18n="hero.scroll">Scroll</span>
       <svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
         <path d="M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
       </svg>
@@ -94,22 +96,22 @@
   <!-- ╚═══════════════════════════════╝ -->
   <section id="about">
     <div class="about-text">
-      <p class="section-label">Qui suis-je ?</p>
-      <h2 class="section-title">Ingénieur IA, passionné<br>de <span>3D, image &amp; création</span></h2>
+      <p class="section-label" data-i18n="about.label">Qui suis-je ?</p>
+      <h2 class="section-title" data-i18n="about.title">Ingénieur IA, passionné<br>de <span>3D, image &amp; création</span></h2>
       <div class="divider"></div>
 
-      <p>
+      <p data-i18n="about.p1">
         Étudiant à l'<strong>UTC Compiègne</strong> en génie informatique,
         spécialisation <strong>Intelligence Artificielle &amp; Sciences des Données</strong>
         (2022–2027), avec un échange universitaire à l'<strong>UFSC Florianopolis</strong> en 2026.
       </p>
-      <p>
+      <p data-i18n="about.p2">
         En stage chez <strong>SoWhen?</strong> (Montreuil), j'ai conçu des expériences
         de réalité augmentée et développé un système de <strong>reconnaissance de gestes
         en AR avec Unreal Engine</strong>. Auparavant, vidéaste et technicien chez
         <strong>Blue Spirit</strong> (studio d'animation parisien).
       </p>
-      <p>
+      <p data-i18n="about.p3">
         Ce qui m'anime : construire des systèmes où le <strong>rendu GPU, l'IA, l'image et le
         game design</strong> convergent pour créer des expériences interactives qui repoussent
         les limites du temps réel.
@@ -118,7 +120,7 @@
 
     <div class="about-skills">
       <div class="skill-group">
-        <h4>Game Dev &amp; Rendu GPU</h4>
+        <h4 data-i18n="about.skill1">Game Dev &amp; Rendu GPU</h4>
         <div class="tags">
           <span class="tag gold">Unreal Engine</span>
           <span class="tag gold">OpenGL / GLSL</span>
@@ -130,7 +132,7 @@
       </div>
 
       <div class="skill-group">
-        <h4>IA &amp; Machine Learning</h4>
+        <h4 data-i18n="about.skill2">IA &amp; Machine Learning</h4>
         <div class="tags">
           <span class="tag purple">PyTorch</span>
           <span class="tag purple">TensorFlow</span>
@@ -143,7 +145,7 @@
       </div>
 
       <div class="skill-group">
-        <h4>Systèmes &amp; Bas niveau</h4>
+        <h4 data-i18n="about.skill3">Systèmes &amp; Bas niveau</h4>
         <div class="tags">
           <span class="tag blue">C++</span>
           <span class="tag blue">C</span>
@@ -157,7 +159,7 @@
       </div>
 
       <div class="skill-group">
-        <h4>Web &amp; Frameworks</h4>
+        <h4 data-i18n="about.skill4">Web &amp; Frameworks</h4>
         <div class="tags">
           <span class="tag">HTML / CSS / JS</span>
           <span class="tag">React</span>
@@ -173,8 +175,8 @@
   <!-- ║            PROJETS            ║ -->
   <!-- ╚═══════════════════════════════╝ -->
   <section id="projects">
-    <p class="section-label">Ce que j'ai construit</p>
-    <h2 class="section-title">Projets <span>sélectionnés</span></h2>
+    <p class="section-label" data-i18n="projects.label">Ce que j'ai construit</p>
+    <h2 class="section-title" data-i18n="projects.title">Projets <span>sélectionnés</span></h2>
     <div class="divider"></div>
 
     <div class="projects-list">
@@ -185,7 +187,7 @@
           <iframe src="https://www.youtube.com/embed/VzZkU2pbt2c?rel=0" frameborder="0" allowfullscreen loading="lazy"></iframe>
         </div>
         <div class="project-info">
-          <span class="project-number">Projet 01</span>
+          <span class="project-number" data-i18n="p01.num">Projet 01</span>
           <h3 class="project-title">HeartBit</h3>
           <div class="project-tags tags">
             <span class="tag gold">Unreal Engine</span>
@@ -193,7 +195,7 @@
             <span class="tag gold">C++</span>
             <span class="tag gold">Game Design</span>
           </div>
-          <p class="project-desc">
+          <p class="project-desc" data-i18n="p01.desc">
             Jeu de plateforme émotionnel dans lequel un robot apprend progressivement à
             ressentir des émotions humaines. Chaque niveau débloque un nouveau sentiment
             qui modifie les mécaniques de gameplay — peur, joie, colère — explorant la
@@ -208,14 +210,14 @@
           <iframe src="https://www.youtube.com/embed/dCYOSyWmizg?rel=0" frameborder="0" allowfullscreen loading="lazy"></iframe>
         </div>
         <div class="project-info">
-          <span class="project-number">Projet 02</span>
+          <span class="project-number" data-i18n="p02.num">Projet 02</span>
           <h3 class="project-title">DreamMaze</h3>
           <div class="project-tags tags">
             <span class="tag gold">Unreal Engine</span>
             <span class="tag gold">Blueprints</span>
             <span class="tag gold">Game Design</span>
           </div>
-          <p class="project-desc">
+          <p class="project-desc" data-i18n="p02.desc">
             Jeu de labyrinthe en 3 niveaux où chaque stage est un <strong>défi de vitesse</strong>
             dans un univers onirique. Le joueur navigue dans des labyrinthes procéduraux
             aux ambiances distinctes, avec un système de chrono et de classement pour
@@ -230,7 +232,7 @@
           <iframe src="https://www.youtube.com/embed/8m37P7Qz_DM?rel=0" frameborder="0" allowfullscreen loading="lazy"></iframe>
         </div>
         <div class="project-info">
-          <span class="project-number">Projet 03</span>
+          <span class="project-number" data-i18n="p03.num">Projet 03</span>
           <h3 class="project-title">Picasso</h3>
           <div class="project-tags tags">
             <span class="tag gold">Unreal Engine</span>
@@ -238,7 +240,7 @@
             <span class="tag gold">Blueprints</span>
             <span class="tag purple">Game Design</span>
           </div>
-          <p class="project-desc">
+          <p class="project-desc" data-i18n="p03.desc">
             Recréation interactive du bar <strong>Pic'Asso</strong> en 3D fidèle à
             l'original — modélisation de l'espace, éclairages d'ambiance et personnages.
             La mascotte Teddy bear est jouable, avec un système d'<strong>effet d'ivresse</strong>
@@ -253,14 +255,14 @@
           <iframe src="https://www.youtube.com/embed/-25Uwa_oVKk?rel=0" frameborder="0" allowfullscreen loading="lazy"></iframe>
         </div>
         <div class="project-info">
-          <span class="project-number">Projet 04</span>
+          <span class="project-number" data-i18n="p04.num">Projet 04</span>
           <h3 class="project-title">Trailer Hippic</h3>
           <div class="project-tags tags">
             <span class="tag gold">Unreal Engine</span>
             <span class="tag gold">DaVinci Resolve</span>
             <span class="tag purple">Cinématique</span>
           </div>
-          <p class="project-desc">
+          <p class="project-desc" data-i18n="p04.desc">
             Trailer cinématique annonçant la <strong>transition de l'association insPicteur
             vers Hippic</strong>. Séquence entièrement réalisée dans Unreal Engine puis
             montée sous DaVinci Resolve — direction artistique, motion design et sound design
@@ -275,14 +277,14 @@
           <iframe src="https://www.youtube.com/embed/Fz16symxm_U?rel=0" frameborder="0" allowfullscreen loading="lazy"></iframe>
         </div>
         <div class="project-info">
-          <span class="project-number">Projet 05</span>
+          <span class="project-number" data-i18n="p05.num">Projet 05</span>
           <h3 class="project-title">Trailer NASA Pyjama</h3>
           <div class="project-tags tags">
             <span class="tag gold">Unreal Engine</span>
             <span class="tag gold">DaVinci Resolve</span>
             <span class="tag purple">Motion Design</span>
           </div>
-          <p class="project-desc">
+          <p class="project-desc" data-i18n="p05.desc">
             Trailer de révélation pour une <strong>Soirée de fin de semestre</strong> (NASA) sur le thème soirée pyjama.
             Conçu dans Unreal Engine et monté
             sous DaVinci Resolve — couleurs rétro NASA, effets cinématiques et bande-son
@@ -297,15 +299,15 @@
           <img src="assets/BlackHole.png" alt="BlackHole simulation" loading="lazy">
         </div>
         <div class="project-info">
-          <span class="project-number">Projet 06</span>
-          <h3 class="project-title">BlackHole — Simulation temps réel</h3>
+          <span class="project-number" data-i18n="p06.num">Projet 06</span>
+          <h3 class="project-title" data-i18n="p06.title">BlackHole — Simulation temps réel</h3>
           <div class="project-tags tags">
             <span class="tag blue">C++</span>
             <span class="tag blue">GPU</span>
             <span class="tag teal">Simulation</span>
             <span class="tag teal">Ray Tracing</span>
           </div>
-          <p class="project-desc">
+          <p class="project-desc" data-i18n="p06.desc">
             Simulation physiquement correcte d'un trou noir en temps réel — courbure de
             l'espace-temps modélisée par les <strong>équations de Schwarzschild</strong>,
             accrétion de matière et lentille gravitationnelle. Rendu GPU par ray tracing
@@ -328,7 +330,7 @@
           <img src="assets/GPUPathTracer.png" alt="GPU Path Tracer render" loading="lazy">
         </div>
         <div class="project-info">
-          <span class="project-number">Projet 07</span>
+          <span class="project-number" data-i18n="p07.num">Projet 07</span>
           <h3 class="project-title">GPU Path Tracer</h3>
           <div class="project-tags tags">
             <span class="tag blue">C++</span>
@@ -336,7 +338,7 @@
             <span class="tag gold">Path Tracing</span>
             <span class="tag teal">GPU Compute</span>
           </div>
-          <p class="project-desc">
+          <p class="project-desc" data-i18n="p07.desc">
             Path tracer Monte Carlo développé from scratch, accéléré sur GPU via les
             <strong>Metal compute shaders</strong> d'Apple. Implémente la BRDF physiquement
             correcte, l'illumination globale, les réflexions et réfractions — avec
@@ -359,14 +361,14 @@
           <img src="assets/Simulation_go.png" alt="Mall simulation multi-agents" loading="lazy">
         </div>
         <div class="project-info">
-          <span class="project-number">Projet 08</span>
-          <h3 class="project-title">Simulation de centre commercial — Multi-agents</h3>
+          <span class="project-number" data-i18n="p08.num">Projet 08</span>
+          <h3 class="project-title" data-i18n="p08.title">Simulation de centre commercial — Multi-agents</h3>
           <div class="project-tags tags">
             <span class="tag blue">Go</span>
             <span class="tag teal">Multi-agents</span>
             <span class="tag teal">Simulation</span>
           </div>
-          <p class="project-desc">
+          <p class="project-desc" data-i18n="p08.desc">
             Simulation d'un centre commercial en <strong>Go</strong> avec un système
             multi-agents concurrent : clients, vendeurs et vigiles coexistent avec leurs
             propres comportements, files d'attente et décisions autonomes. Exploite les
@@ -390,8 +392,8 @@
   <!-- ║         COURT MÉTRAGES        ║ -->
   <!-- ╚═══════════════════════════════╝ -->
   <section id="films">
-    <p class="section-label">Réalisation</p>
-    <h2 class="section-title">Court <span>métrages</span></h2>
+    <p class="section-label" data-i18n="films.label">Réalisation</p>
+    <h2 class="section-title" data-i18n="films.title">Court <span>métrages</span></h2>
     <div class="divider"></div>
     <div class="films-row">
 
@@ -401,7 +403,7 @@
         </div>
         <div class="film-info">
           <h3 class="film-title">KIT-KAT</h3>
-          <p class="film-role">Écriture · Réalisation · Montage</p>
+          <p class="film-role" data-i18n="film.role">Écriture · Réalisation · Montage</p>
         </div>
       </div>
 
@@ -411,7 +413,7 @@
         </div>
         <div class="film-info">
           <h3 class="film-title">Poker Face</h3>
-          <p class="film-role">Écriture · Réalisation · Montage</p>
+          <p class="film-role" data-i18n="film.role">Écriture · Réalisation · Montage</p>
         </div>
       </div>
 
@@ -422,10 +424,10 @@
   <!-- ║            CONTACT            ║ -->
   <!-- ╚═══════════════════════════════╝ -->
   <section id="contact">
-    <p class="section-label">Me contacter</p>
-    <h2 class="section-title">Travaillons <span>ensemble</span></h2>
+    <p class="section-label" data-i18n="contact.label">Me contacter</p>
+    <h2 class="section-title" data-i18n="contact.title">Travaillons <span>ensemble</span></h2>
     <div class="divider" style="margin: 0 auto 2rem;"></div>
-    <p class="contact-intro">
+    <p class="contact-intro" data-i18n="contact.desc">
       Ouvert à tout ce qui touche à l'IA appliquée — game development, computer vision,
       robotique, capteurs neuromorphiques, rendu 3D temps réel…
       Si ton projet met l'intelligence au service de la création ou de la perception, parlons-en.
@@ -464,7 +466,7 @@
   <!-- ║            FOOTER             ║ -->
   <!-- ╚═══════════════════════════════╝ -->
   <footer>
-    <p>© 2026 Lucas Delbecque — Fait avec HTML/CSS/Three.js &bull; Hébergé sur GitHub Pages</p>
+    <p data-i18n="footer">© 2026 Lucas Delbecque — Fait avec HTML/CSS/Three.js &bull; Hébergé sur GitHub Pages</p>
   </footer>
 
 </body>
