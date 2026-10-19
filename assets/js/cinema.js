@@ -740,9 +740,9 @@
   }
 
   TV.init(function (a) {
-    if (a.type === 'play') playVideo(a.ytId, a.title);
+    if (a.type === 'play') { playVideo(a.ytId, a.title); dropRemote(); }
     else if (a.type === 'link') openLink(a.url);
-    else if (a.type === 'resume') resumeVideo();
+    else if (a.type === 'resume') { resumeVideo(); dropRemote(); }
     else if (a.type === 'stop') stopVideo();
     else if (a.type === 'menu') openMenu();
     else if (a.type === 'togglePlay') togglePlay();
