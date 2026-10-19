@@ -36,7 +36,7 @@ window.PORTFOLIO = {
       }
     },
     {
-      id: 'hippic', title: 'Trailer Hippic', yt: '-25Uwa_oVKk',
+      id: 'hippic', title: 'Trailer Hippic P24', yt: '-25Uwa_oVKk',
       tags: ['Unreal Engine', 'DaVinci Resolve', 'Cinematic'],
       colors: ['#2ec4b6', '#04211f'],
       desc: {
@@ -45,7 +45,7 @@ window.PORTFOLIO = {
       }
     },
     {
-      id: 'nasa', title: 'Trailer NASA Pyjama', yt: 'Fz16symxm_U',
+      id: 'nasa', title: 'Trailer NASA A24', yt: 'Fz16symxm_U',
       tags: ['Unreal Engine', 'DaVinci Resolve', 'Motion Design'],
       colors: ['#4361ee', '#0a0f33'],
       desc: {
@@ -54,7 +54,7 @@ window.PORTFOLIO = {
       }
     },
     {
-      id: 'piclandtrailer', title: 'Trailer Picasso A26 — Pic Land', yt: '01cJXPFH3HQ',
+      id: 'piclandtrailer', title: 'Trailer Picland A26', yt: '01cJXPFH3HQ',
       tags: ['Trailer', 'Cinematic'],
       colors: ['#ffb703', '#3a0ca3'],
       desc: {
