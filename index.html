@@ -1,473 +1,130 @@
 <!DOCTYPE html>
 <!-- CUSTOM DOMAIN: portfoliolucasdelbecque.fr -->
-<html lang="fr">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Lucas Delbecque — Data Engineer &amp; AI Game Developer</title>
-  <meta name="description" content="Portfolio de Lucas Delbecque, étudiant UTC Compiègne spécialité IA & Sciences des Données, Data Engineer et AI Game Developer Unity/Unreal." />
+  <meta name="description" content="Portfolio interactif de Lucas Delbecque, étudiant UTC Compiègne spécialité IA & Sciences des Données, Data Engineer et AI Game Developer Unity/Unreal. Entre dans la salle de cinéma 3D et prends la télécommande." />
   <meta name="author" content="Lucas Delbecque" />
+  <meta name="theme-color" content="#000000" />
 
   <!-- Open Graph / SEO -->
   <meta property="og:type"        content="website" />
   <meta property="og:url"         content="https://portfoliolucasdelbecque.fr/" />
   <meta property="og:title"       content="Lucas Delbecque — Data Engineer & AI Game Developer" />
-  <meta property="og:description" content="Portfolio de Lucas Delbecque — Data Engineering, Machine Learning, Computer Vision, Unreal Engine 5, Unity." />
+  <meta property="og:description" content="Portfolio interactif de Lucas Delbecque — une salle de cinéma 3D : Data Engineering, Machine Learning, Computer Vision, Unreal Engine 5, Unity." />
   <meta property="og:image"       content="https://portfoliolucasdelbecque.fr/assets/og-preview.png" /><!-- [À REMPLACER] chemin vers ta preview image -->
 
   <!-- Twitter Card -->
   <meta name="twitter:card"        content="summary_large_image" />
   <meta name="twitter:title"       content="Lucas Delbecque — Data Engineer & AI Game Developer" />
-  <meta name="twitter:description" content="Portfolio de Lucas Delbecque — Data Engineering, ML, Unreal Engine 5." />
+  <meta name="twitter:description" content="Portfolio interactif de Lucas Delbecque — une salle de cinéma 3D." />
 
   <link rel="canonical" href="https://portfoliolucasdelbecque.fr/" />
 
-  <!-- Stylesheet -->
+  <!-- Fonts (used by the HTML overlay and by the in-scene screen) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
   <link rel="stylesheet" href="assets/css/style.css" />
 
-  <!-- Three.js CDN -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
-  <!-- Main script (after Three.js) -->
-  <script src="assets/js/main.js" defer></script>
+  <!-- Three.js r128 + the add-ons used by the scene -->
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/renderers/CSS3DRenderer.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/lights/RectAreaLightUniformsLib.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/utils/BufferGeometryUtils.js" defer></script>
+
+  <!-- Site scripts (order matters) -->
+  <script src="assets/js/data.js" defer></script>
   <script src="assets/js/i18n.js" defer></script>
+  <script src="assets/js/screen.js" defer></script>
+  <script src="assets/js/cinema.js" defer></script>
 </head>
-<body>
+<body data-entered="false" data-remote="false" data-video="false" data-view="attract" data-playing="false">
 
-  <!-- Canvas 3D pleine page (fixed, z-index 0) -->
-  <canvas id="hero-canvas"></canvas>
-  <!-- Gradients atmosphériques colorés au-dessus du canvas -->
-  <div id="scene-overlay"></div>
+  <!-- 3D scene: CSS3D layer (YouTube iframe) sits under the WebGL canvas -->
+  <div id="stage">
+    <div id="css-layer"></div>
+    <div id="gl-layer"></div>
+  </div>
 
-  <!-- ╔═══════════════════════════════╗ -->
-  <!-- ║           NAVIGATION          ║ -->
-  <!-- ╚═══════════════════════════════╝ -->
-  <nav>
-    <span class="nav-logo">Lucas Delbecque</span>
-    <ul class="nav-links">
-      <li><a href="#about" data-i18n="nav.about">À propos</a></li>
-      <li><a href="#projects" data-i18n="nav.projects">Projets</a></li>
-      <li><a href="#films" data-i18n="nav.films">Films</a></li>
-      <li><a href="#contact" data-i18n="nav.contact">Contact</a></li>
-    </ul>
-    <button id="lang-toggle" class="lang-btn" aria-label="Switch language">EN</button>
-    <button id="theme-toggle" class="theme-btn" aria-label="Changer le thème">
-      <span id="theme-icon">☀️</span>
-    </button>
-  </nav>
+  <!-- HUD -->
+  <div id="hud">
+    <header class="hud-top">
+      <span class="hud-brand">Lucas Delbecque</span>
+      <button id="lang-toggle" class="hud-btn pill ghost" type="button" aria-label="Switch language">FR</button>
+    </header>
 
-  <!-- ╔═══════════════════════════════╗ -->
-  <!-- ║             HERO              ║ -->
-  <!-- ╚═══════════════════════════════╝ -->
-  <section id="hero">
-    <div class="hero-content">
-      <p class="hero-eyebrow" data-i18n="hero.eyebrow">Portfolio 2026</p>
-      <h1 class="hero-name">Lucas Delbecque</h1>
-      <p class="hero-title" data-i18n="hero.title">
-        Étudiant <span>IA &amp; Data Science</span> · <span>3D</span> · Game Dev
-      </p>
-      <div class="hero-cta">
-        <a href="#projects" class="btn btn-primary">
-          <!-- Play icon -->
-          <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-            <path d="M5 3.5l7 4.5-7 4.5V3.5z"/>
-          </svg>
-          <span data-i18n="hero.cta.primary">Voir mes projets</span>
-        </a>
-        <a href="assets/cv-lucas-delbecque.pdf" download class="btn btn-outline">
-          <!-- Download icon -->
-          <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-            <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
-            <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
-          </svg>
-          <span data-i18n="hero.cta.secondary">Télécharger mon CV</span>
-        </a>
+    <footer class="hud-bottom">
+      <p class="hud-hint hint-free" data-i18n="hud.hint.free">Move the mouse to look around — grab the remote to browse the screen</p>
+      <p class="hud-hint hint-remote" data-i18n="hud.hint.remote">Mouse: pointer · Wheel: scroll · Click: select · Esc: put the remote down</p>
+      <div class="hud-actions">
+        <button id="btn-playpause" class="hud-btn pill ghost" type="button">
+          <svg class="ic-play" width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M4 2.5v11l9-5.5z"/></svg>
+          <svg class="ic-pause" width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M3.5 2h3v12h-3zM9.5 2h3v12h-3z"/></svg>
+          <span class="lbl-play" data-i18n="hud.play">Play</span>
+          <span class="lbl-pause" data-i18n="hud.pause">Pause</span>
+          <kbd>Space</kbd>
+        </button>
+        <button id="btn-remote" class="hud-btn pill primary" type="button">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="2" width="10" height="20" rx="3"/><circle cx="12" cy="7" r="1.6"/><path d="M10 12h4M10 16h4"/></svg>
+          <span class="lbl-take" data-i18n="hud.take">Take the remote</span>
+          <span class="lbl-drop" data-i18n="hud.drop">Put the remote down</span>
+          <kbd>E</kbd>
+        </button>
       </div>
-    </div>
-    <div class="scroll-hint">
-      <span data-i18n="hero.scroll">Scroll</span>
-      <svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
-        <path d="M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
-      </svg>
-    </div>
-  </section>
+    </footer>
+  </div>
 
-  <!-- ╔═══════════════════════════════╗ -->
-  <!-- ║           À PROPOS            ║ -->
-  <!-- ╚═══════════════════════════════╝ -->
-  <section id="about">
-    <div class="about-text">
-      <p class="section-label" data-i18n="about.label">Qui suis-je ?</p>
-      <h2 class="section-title" data-i18n="about.title">Ingénieur IA, passionné<br>de <span>3D, image &amp; création</span></h2>
-      <div class="divider"></div>
-
-      <p data-i18n="about.p1">
-        Étudiant à l'<strong>UTC Compiègne</strong> en génie informatique,
-        spécialisation <strong>Intelligence Artificielle &amp; Sciences des Données</strong>
-        (2022–2027), avec un échange universitaire à l'<strong>UFSC Florianopolis</strong> en 2026.
-      </p>
-      <p data-i18n="about.p2">
-        En stage chez <strong>SoWhen?</strong> (Montreuil), j'ai conçu des expériences
-        de réalité augmentée et développé un système de <strong>reconnaissance de gestes
-        en AR avec Unreal Engine</strong>. Auparavant, vidéaste et technicien chez
-        <strong>Blue Spirit</strong> (studio d'animation parisien).
-      </p>
-      <p data-i18n="about.p3">
-        Ce qui m'anime : construire des systèmes où le <strong>rendu GPU, l'IA, l'image et le
-        game design</strong> convergent pour créer des expériences interactives qui repoussent
-        les limites du temps réel.
+  <!-- Intro -->
+  <div id="intro">
+    <div class="intro-inner">
+      <p class="intro-eyebrow" data-i18n="intro.eyebrow">Portfolio 2026</p>
+      <h1 class="intro-title">Lucas Delbecque</h1>
+      <p class="intro-sub" data-i18n="intro.sub">AI &amp; Data Science student · 3D · Game Dev</p>
+      <button id="enter-btn" class="enter-btn" type="button">
+        <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M4 2.5v11l9-5.5z"/></svg>
+        <span data-i18n="intro.enter">Enter the theatre</span>
+      </button>
+      <p class="intro-hint" data-i18n="intro.hint">Take a seat. Grab the remote. Press play.</p>
+      <p class="intro-links">
+        <a href="https://www.linkedin.com/in/lucas-delbecque-96863a21b/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://github.com/lucasdelbecque" target="_blank" rel="noopener">GitHub</a>
+        <a href="assets/cv-lucas-delbecque.pdf" target="_blank" rel="noopener">CV</a>
       </p>
     </div>
+  </div>
 
-    <div class="about-skills">
-      <div class="skill-group">
-        <h4 data-i18n="about.skill1">Game Dev &amp; Rendu GPU</h4>
-        <div class="tags">
-          <span class="tag gold">Unreal Engine</span>
-          <span class="tag gold">OpenGL / GLSL</span>
-          <span class="tag gold">Metal</span>
-          <span class="tag gold">Ray Tracing</span>
-          <span class="tag gold">Path Tracing</span>
-          <span class="tag gold">DaVinci Resolve</span>
-        </div>
-      </div>
+  <div id="rotate-hint" data-i18n="hud.portrait">Rotate your device for the best experience</div>
 
-      <div class="skill-group">
-        <h4 data-i18n="about.skill2">IA &amp; Machine Learning</h4>
-        <div class="tags">
-          <span class="tag purple">PyTorch</span>
-          <span class="tag purple">TensorFlow</span>
-          <span class="tag purple">Scikit-learn</span>
-          <span class="tag purple">CNN</span>
-          <span class="tag purple">RAG / LangChain</span>
-          <span class="tag purple">Hugging Face</span>
-          <span class="tag purple">Ollama</span>
-        </div>
-      </div>
-
-      <div class="skill-group">
-        <h4 data-i18n="about.skill3">Systèmes &amp; Bas niveau</h4>
-        <div class="tags">
-          <span class="tag blue">C++</span>
-          <span class="tag blue">C</span>
-          <span class="tag blue">Python</span>
-          <span class="tag blue">Go</span>
-          <span class="tag blue">Java</span>
-          <span class="tag blue">SQL</span>
-          <span class="tag blue">Raspberry Pi</span>
-          <span class="tag blue">Docker</span>
-        </div>
-      </div>
-
-      <div class="skill-group">
-        <h4 data-i18n="about.skill4">Web &amp; Frameworks</h4>
-        <div class="tags">
-          <span class="tag">HTML / CSS / JS</span>
-          <span class="tag">React</span>
-          <span class="tag">SpringBoot</span>
-          <span class="tag">Qt</span>
-          <span class="tag">JavaFX</span>
-        </div>
-      </div>
+  <!-- No WebGL -->
+  <div id="fallback">
+    <div class="fallback-inner">
+      <h2 data-i18n="fallback.title">WebGL is not available</h2>
+      <p data-i18n="fallback.text">This portfolio is a 3D cinema and needs WebGL. Here are the essentials:</p>
+      <ul>
+        <li><a href="https://www.linkedin.com/in/lucas-delbecque-96863a21b/" target="_blank" rel="noopener">LinkedIn</a></li>
+        <li><a href="https://github.com/lucasdelbecque" target="_blank" rel="noopener">GitHub</a></li>
+        <li><a href="mailto:lucas.delbecque78@gmail.com">lucas.delbecque78@gmail.com</a></li>
+        <li><a href="assets/cv-lucas-delbecque.pdf" target="_blank" rel="noopener">CV (PDF)</a></li>
+      </ul>
     </div>
-  </section>
+  </div>
 
-  <!-- ╔═══════════════════════════════╗ -->
-  <!-- ║            PROJETS            ║ -->
-  <!-- ╚═══════════════════════════════╝ -->
-  <section id="projects">
-    <p class="section-label" data-i18n="projects.label">Ce que j'ai construit</p>
-    <h2 class="section-title" data-i18n="projects.title">Projets <span>sélectionnés</span></h2>
-    <div class="divider"></div>
-
-    <div class="projects-list">
-
-      <!-- ── PROJET 1 : HeartBit ── -->
-      <article class="project">
-        <div class="project-media">
-          <iframe src="https://www.youtube.com/embed/VzZkU2pbt2c?rel=0" frameborder="0" allowfullscreen loading="lazy"></iframe>
-        </div>
-        <div class="project-info">
-          <span class="project-number" data-i18n="p01.num">Projet 01</span>
-          <h3 class="project-title">HeartBit</h3>
-          <div class="project-tags tags">
-            <span class="tag gold">Unreal Engine</span>
-            <span class="tag gold">Blueprints</span>
-            <span class="tag gold">C++</span>
-            <span class="tag gold">Game Design</span>
-          </div>
-          <p class="project-desc" data-i18n="p01.desc">
-            Jeu de plateforme émotionnel dans lequel un robot apprend progressivement à
-            ressentir des émotions humaines. Chaque niveau débloque un nouveau sentiment
-            qui modifie les mécaniques de gameplay — peur, joie, colère — explorant la
-            frontière entre <strong>intelligence artificielle et conscience</strong>.
-          </p>
-        </div>
-      </article>
-
-      <!-- ── PROJET 2 : DreamMaze ── -->
-      <article class="project">
-        <div class="project-media">
-          <iframe src="https://www.youtube.com/embed/dCYOSyWmizg?rel=0" frameborder="0" allowfullscreen loading="lazy"></iframe>
-        </div>
-        <div class="project-info">
-          <span class="project-number" data-i18n="p02.num">Projet 02</span>
-          <h3 class="project-title">DreamMaze</h3>
-          <div class="project-tags tags">
-            <span class="tag gold">Unreal Engine</span>
-            <span class="tag gold">Blueprints</span>
-            <span class="tag gold">Game Design</span>
-          </div>
-          <p class="project-desc" data-i18n="p02.desc">
-            Jeu de labyrinthe en 3 niveaux où chaque stage est un <strong>défi de vitesse</strong>
-            dans un univers onirique. Le joueur navigue dans des labyrinthes procéduraux
-            aux ambiances distinctes, avec un système de chrono et de classement pour
-            pousser le speedrun.
-          </p>
-        </div>
-      </article>
-
-      <!-- ── PROJET 3 : Picasso ── -->
-      <article class="project">
-        <div class="project-media">
-          <iframe src="https://www.youtube.com/embed/8m37P7Qz_DM?rel=0" frameborder="0" allowfullscreen loading="lazy"></iframe>
-        </div>
-        <div class="project-info">
-          <span class="project-number" data-i18n="p03.num">Projet 03</span>
-          <h3 class="project-title">Picasso</h3>
-          <div class="project-tags tags">
-            <span class="tag gold">Unreal Engine</span>
-            <span class="tag gold">3D Modeling</span>
-            <span class="tag gold">Blueprints</span>
-            <span class="tag purple">Game Design</span>
-          </div>
-          <p class="project-desc" data-i18n="p03.desc">
-            Recréation interactive du bar <strong>Pic'Asso</strong> en 3D fidèle à
-            l'original — modélisation de l'espace, éclairages d'ambiance et personnages.
-            La mascotte Teddy bear est jouable, avec un système d'<strong>effet d'ivresse</strong>
-            qui déforme progressivement la caméra et les contrôles selon la consommation.
-          </p>
-        </div>
-      </article>
-
-      <!-- ── PROJET 4 : Trailer Hippic ── -->
-      <article class="project">
-        <div class="project-media">
-          <iframe src="https://www.youtube.com/embed/-25Uwa_oVKk?rel=0" frameborder="0" allowfullscreen loading="lazy"></iframe>
-        </div>
-        <div class="project-info">
-          <span class="project-number" data-i18n="p04.num">Projet 04</span>
-          <h3 class="project-title">Trailer Hippic</h3>
-          <div class="project-tags tags">
-            <span class="tag gold">Unreal Engine</span>
-            <span class="tag gold">DaVinci Resolve</span>
-            <span class="tag purple">Cinématique</span>
-          </div>
-          <p class="project-desc" data-i18n="p04.desc">
-            Trailer cinématique annonçant la <strong>transition de l'association insPicteur
-            vers Hippic</strong>. Séquence entièrement réalisée dans Unreal Engine puis
-            montée sous DaVinci Resolve — direction artistique, motion design et sound design
-            pour créer une annonce percutante.
-          </p>
-        </div>
-      </article>
-
-      <!-- ── PROJET 5 : Trailer NASA Pyjama ── -->
-      <article class="project">
-        <div class="project-media">
-          <iframe src="https://www.youtube.com/embed/Fz16symxm_U?rel=0" frameborder="0" allowfullscreen loading="lazy"></iframe>
-        </div>
-        <div class="project-info">
-          <span class="project-number" data-i18n="p05.num">Projet 05</span>
-          <h3 class="project-title">Trailer NASA Pyjama</h3>
-          <div class="project-tags tags">
-            <span class="tag gold">Unreal Engine</span>
-            <span class="tag gold">DaVinci Resolve</span>
-            <span class="tag purple">Motion Design</span>
-          </div>
-          <p class="project-desc" data-i18n="p05.desc">
-            Trailer de révélation pour une <strong>Soirée de fin de semestre</strong> (NASA) sur le thème soirée pyjama.
-            Conçu dans Unreal Engine et monté
-            sous DaVinci Resolve — couleurs rétro NASA, effets cinématiques et bande-son
-            pour une révélation mémorable.
-          </p>
-        </div>
-      </article>
-
-      <!-- ── PROJET 6 : BlackHole C++ ── -->
-      <article class="project">
-        <div class="project-media">
-          <img src="assets/BlackHole.png" alt="BlackHole simulation" loading="lazy">
-        </div>
-        <div class="project-info">
-          <span class="project-number" data-i18n="p06.num">Projet 06</span>
-          <h3 class="project-title" data-i18n="p06.title">BlackHole — Simulation temps réel</h3>
-          <div class="project-tags tags">
-            <span class="tag blue">C++</span>
-            <span class="tag blue">GPU</span>
-            <span class="tag teal">Simulation</span>
-            <span class="tag teal">Ray Tracing</span>
-          </div>
-          <p class="project-desc" data-i18n="p06.desc">
-            Simulation physiquement correcte d'un trou noir en temps réel — courbure de
-            l'espace-temps modélisée par les <strong>équations de Schwarzschild</strong>,
-            accrétion de matière et lentille gravitationnelle. Rendu GPU par ray tracing
-            itératif, développé entièrement en C++.
-          </p>
-          <div class="project-links">
-            <a href="https://github.com/lucasdelbecque/BlackHole" class="project-link" target="_blank" rel="noopener">
-              <svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
-                <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
-              </svg>
-              GitHub
-            </a>
-          </div>
-        </div>
-      </article>
-
-      <!-- ── PROJET 7 : GPU Path Tracer ── -->
-      <article class="project">
-        <div class="project-media">
-          <img src="assets/GPUPathTracer.png" alt="GPU Path Tracer render" loading="lazy">
-        </div>
-        <div class="project-info">
-          <span class="project-number" data-i18n="p07.num">Projet 07</span>
-          <h3 class="project-title">GPU Path Tracer</h3>
-          <div class="project-tags tags">
-            <span class="tag blue">C++</span>
-            <span class="tag gold">Metal</span>
-            <span class="tag gold">Path Tracing</span>
-            <span class="tag teal">GPU Compute</span>
-          </div>
-          <p class="project-desc" data-i18n="p07.desc">
-            Path tracer Monte Carlo développé from scratch, accéléré sur GPU via les
-            <strong>Metal compute shaders</strong> d'Apple. Implémente la BRDF physiquement
-            correcte, l'illumination globale, les réflexions et réfractions — avec
-            débruitage progressif frame par frame.
-          </p>
-          <div class="project-links">
-            <a href="https://github.com/lucasdelbecque/gpu-pathtracer" class="project-link" target="_blank" rel="noopener">
-              <svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
-                <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
-              </svg>
-              GitHub
-            </a>
-          </div>
-        </div>
-      </article>
-
-      <!-- ── PROJET 8 : Simulation Mall Go ── -->
-      <article class="project">
-        <div class="project-media">
-          <img src="assets/Simulation_go.png" alt="Mall simulation multi-agents" loading="lazy">
-        </div>
-        <div class="project-info">
-          <span class="project-number" data-i18n="p08.num">Projet 08</span>
-          <h3 class="project-title" data-i18n="p08.title">Simulation de centre commercial — Multi-agents</h3>
-          <div class="project-tags tags">
-            <span class="tag blue">Go</span>
-            <span class="tag teal">Multi-agents</span>
-            <span class="tag teal">Simulation</span>
-          </div>
-          <p class="project-desc" data-i18n="p08.desc">
-            Simulation d'un centre commercial en <strong>Go</strong> avec un système
-            multi-agents concurrent : clients, vendeurs et vigiles coexistent avec leurs
-            propres comportements, files d'attente et décisions autonomes. Exploite les
-            goroutines et channels pour modéliser les interactions en temps réel.
-          </p>
-          <div class="project-links">
-            <a href="https://github.com/lucasdelbecque/simulation_mall" class="project-link" target="_blank" rel="noopener">
-              <svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
-                <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
-              </svg>
-              GitHub
-            </a>
-          </div>
-        </div>
-      </article>
-
-    </div><!-- /projects-list -->
-  </section>
-
-  <!-- ╔═══════════════════════════════╗ -->
-  <!-- ║         COURT MÉTRAGES        ║ -->
-  <!-- ╚═══════════════════════════════╝ -->
-  <section id="films">
-    <p class="section-label" data-i18n="films.label">Réalisation</p>
-    <h2 class="section-title" data-i18n="films.title">Court <span>métrages</span></h2>
-    <div class="divider"></div>
-    <div class="films-row">
-
-      <div class="film-card">
-        <div class="film-embed">
-          <iframe src="https://www.youtube.com/embed/6JTWz-3mWow?rel=0" frameborder="0" allowfullscreen loading="lazy"></iframe>
-        </div>
-        <div class="film-info">
-          <h3 class="film-title">KIT-KAT</h3>
-          <p class="film-role" data-i18n="film.role">Écriture · Réalisation · Montage</p>
-        </div>
-      </div>
-
-      <div class="film-card">
-        <div class="film-embed">
-          <iframe src="https://www.youtube.com/embed/DbV-DD5waxI?rel=0" frameborder="0" allowfullscreen loading="lazy"></iframe>
-        </div>
-        <div class="film-info">
-          <h3 class="film-title">Poker Face</h3>
-          <p class="film-role" data-i18n="film.role">Écriture · Réalisation · Montage</p>
-        </div>
-      </div>
-
+  <noscript>
+    <div class="nojs">
+      <h1>Lucas Delbecque</h1>
+      <p>AI &amp; Data Science student · 3D · Game Dev — this portfolio is an interactive 3D cinema and needs JavaScript.</p>
+      <p>
+        <a href="https://www.linkedin.com/in/lucas-delbecque-96863a21b/">LinkedIn</a> ·
+        <a href="https://github.com/lucasdelbecque">GitHub</a> ·
+        <a href="mailto:lucas.delbecque78@gmail.com">Email</a> ·
+        <a href="assets/cv-lucas-delbecque.pdf">CV</a>
+      </p>
     </div>
-  </section>
-
-  <!-- ╔═══════════════════════════════╗ -->
-  <!-- ║            CONTACT            ║ -->
-  <!-- ╚═══════════════════════════════╝ -->
-  <section id="contact">
-    <p class="section-label" data-i18n="contact.label">Me contacter</p>
-    <h2 class="section-title" data-i18n="contact.title">Travaillons <span>ensemble</span></h2>
-    <div class="divider" style="margin: 0 auto 2rem;"></div>
-    <p class="contact-intro" data-i18n="contact.desc">
-      Ouvert à tout ce qui touche à l'IA appliquée — game development, computer vision,
-      robotique, capteurs neuromorphiques, rendu 3D temps réel…
-      Si ton projet met l'intelligence au service de la création ou de la perception, parlons-en.
-    </p>
-
-    <div class="contact-links">
-
-      <!-- LinkedIn -->
-      <a href="https://www.linkedin.com/in/lucas-delbecque-96863a21b/" class="contact-card" target="_blank" rel="noopener">
-        <svg width="28" height="28" fill="currentColor" viewBox="0 0 16 16">
-          <path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016a5.54 5.54 0 0 1 .016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225h2.4z"/>
-        </svg>
-        LinkedIn
-      </a>
-
-      <!-- GitHub -->
-      <a href="https://github.com/lucasdelbecque" class="contact-card" target="_blank" rel="noopener">
-        <svg width="28" height="28" fill="currentColor" viewBox="0 0 16 16">
-          <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
-        </svg>
-        GitHub
-      </a>
-
-      <!-- Email -->
-      <a href="mailto:lucas.delbecque78@gmail.com" class="contact-card">
-        <svg width="28" height="28" fill="currentColor" viewBox="0 0 16 16">
-          <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4Zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2Zm13 2.383-4.708 2.825L15 11.105V5.383Zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741ZM1 11.105l4.708-2.897L1 5.383v5.722Z"/>
-        </svg>
-        Email
-      </a>
-
-    </div>
-  </section>
-
-  <!-- ╔═══════════════════════════════╗ -->
-  <!-- ║            FOOTER             ║ -->
-  <!-- ╚═══════════════════════════════╝ -->
-  <footer>
-    <p data-i18n="footer">© 2026 Lucas Delbecque — Fait avec HTML/CSS/Three.js &bull; Hébergé sur GitHub Pages</p>
-  </footer>
+  </noscript>
 
 </body>
 </html>
